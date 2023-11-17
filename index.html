@@ -1,1 +1,993 @@
-<p>你好</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客论坛</title>
+    <link rel="stylesheet" type="text/css" href="../static/index3.css" />
+    <link rel="stylesheet" type="text/css" href="../static/black.css" />
+    <link rel="stylesheet" type="text/css" href="../static/bili.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../static/login_css.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../static/login.css" />
+    <script src="../static/crypto.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+
+    </style>
+    <script>
+        const data_list2 = [
+            {
+                id: 1,
+                image: 'https://attach.52pojie.cn/forum/202311/01/171900x4hlinjh4nec0ohg.png',
+                title: '文章标题1',
+                author: '发布人1',
+                type_data: '类别1',
+                description: '这是文章1的简介'
+
+            },
+            {
+                id: 1,
+                image: 'https://attach.52pojie.cn/forum/202311/01/171900x4hlinjh4nec0ohg.png',
+                title: '文章标题1',
+                author: '发布人1',
+                type_data: '类别2',
+                description: '这是文章1的简介'
+            },
+            {
+                id: 1,
+                image: 'https://attach.52pojie.cn/forum/202311/01/171900x4hlinjh4nec0ohg.png',
+                title: '文章标题1',
+                author: '发布人1',
+                type_data: '类别3',
+                description: '这是文章1的简介'
+            },
+            {
+                id: 1,
+                image: 'https://attach.52pojie.cn/forum/202311/01/171900x4hlinjh4nec0ohg.png',
+                title: '文章标题1',
+                author: '发布人1',
+
+                type_data: '类别4',
+                description: '这是文章1的简介'
+            },
+            {
+                id: 2,
+                image: 'https://attach.52pojie.cn/forum/202311/01/171935kbnjmarezzwr4y4y.png',
+                title: '文章标题2',
+                author: 'fbbb',
+                type_data: '类别3',
+                description: '这是文章2的简介'
+            }
+        ]
+        const data_list = []
+        const user_img_data = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAAXNSR0IArs4c6QAAAp1JREFUaEPtl01IVFEUx/862oD4MSQNmqA4RCEuJgzBiSiCVkGRq1a1aBUktYkWbdrVJoICwbWugugTXERgWpQkBGMWRKWTIg5JAzlljZMV58IZ3jzf8xK8mHdv560enPtmzv/8ztetio1c+o3/6KkSwZbTFsKWA4YQFsKWRUBS2jKgG+QIYSFsWQQkpS0DKk1LUlpS2rIISEpbBvTvu/TxRBJXew8jXyzg9LM7mMjOecZk8sgZdDZsxfXXT3E5PabO3D10EgdaEhh5/xJnJ+97fncxeRDnuvdhLp9D34PBsu+WVlc2/U86zP7R+/mpUdycTW/KTJvSlRRMnr/9slwKhFsJ+1ZfG8XXYsF8wbnCKrZUR3yF3Og7qgivrf9UsTCe8IvlBexu3q7S1KskqIyikRpEqyNoqI2aL/h2ZgapeDtWioUNac3p/HDxnTpjhWBqdu31MaTiHWXNkNKX0rm/oxtXph9joCsVvGBqDLpn7dd6oF2aBGe/51UXf/7pI449GlYu7G/pxNDefkX+wtSoeg+ccKUE38q8UoLo4bHIo4xqm+2BC67EHOb57Z7xNN/3NLepJkWz+p8QrqRgqtcTO3ownp3FtZknpXSmRYXTO1SEyVGuP3cfcIrhM+4Nzbn83Jt/g1M7e0s1HSrBXGuff3zzXREpXXc1bStbP71WUjrXVteID/kcumLxUnMMlWB2prWuUdWaexdnse610EswZwJliPO3QiWYnGPKtCJ6Pe5R5nfpcO7NzhIJnWAWyTSdov1uQ363LK8bWeCCdcuGaXbt9dA0QTp/RbAuQqbbhbDpBHX+C2FdhEy3C2HTCer8F8K6CJluF8KmE9T5L4R1ETLdLoRNJ6jzXwjrImS6XQibTlDnvxDWRch0+x8KJTjmxVMMzAAAAABJRU5ErkJggg=="
+    </script>
+
+    <script>
+        var data_type = {
+            "类别1": "游戏推荐",
+            "类别2": "聊天问答",
+            "类别3": "文字游戏",
+            "类别4": "游戏资源",
+        }
+        localStorage.data_type = JSON.stringify(data_type)
+    </script>
+
+    <script>
+        function textToBase64(text, fontSize = 20, fontFamily = 'Arial', backgroundColor = '#10a37f') {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 60;
+            canvas.height = 60;
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white'; // 修改这里，将文字颜色设置为白色
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            return canvas.toDataURL('image/png');
+        }
+
+        function generateUUID() {
+            // 定义可用的字符
+            const hexValues = "0123456789abcdef";
+
+            // 定义 UUID 的各个部分
+            let sections = [8, 4, 4, 4, 12];
+
+            // 生成 UUID 的各个部分
+            let uuid = "";
+            for (let i = 0; i < sections.length; i++) {
+                for (let j = 0; j < sections[i]; j++) {
+                    uuid += hexValues[Math.floor(Math.random() * 16)];
+                }
+                if (i < sections.length - 1) {
+                    uuid += "-";
+                }
+            }
+            return uuid;
+        }
+        const QQ_GM = '51015515'
+    </script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="main_app">
+            <div class="category-buttons">
+
+                <div class="mx-auto px-2 sm:px-6 lg:px-8">
+                    <div class="relative flex h-16 items-center justify-between">
+                        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                            <!-- Mobile menu button-->
+                            <button type="button" id="btn-mobile-menu"
+                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                                aria-controls="mobile-menu" aria-expanded="false">
+                                <span class="sr-only">Open main menu</span>
+                                <!--
+                                    Icon when menu is closed.
+            
+                                    Menu open: "hidden", Menu closed: "block"
+                                  -->
+                                <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                                <!--
+                                    Icon when menu is open.
+            
+                                    Menu open: "block", Menu closed: "hidden"
+                                  -->
+                                <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                            <div class="flex flex-shrink-0 items-center">
+                                <div class="relative h-[30px] w-[30px] p-1 rounded-sm text-white flex items-center justify-center"
+                                    style="background-color: rgb(16, 163, 127);">
+                                    <a href="/" title="ChatGPT中国站">
+                                        <svg width="41" height="41" viewBox="0 0 41 41" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" class="h-6 w-6">
+                                            <text fill="#ffffff" stroke-width="0" x="3.5" y="22.64069" id="svg_1"
+                                                font-size="15" font-family="Noto Sans JP" text-anchor="start"
+                                                xml:space="preserve" stroke="#000"
+                                                transform="matrix(1.15291 0 0 1.50338 -1.52908 -5.66494)"
+                                                font-style="italic" font-weight="bold"> blog</text>
+                                        </svg>
+
+
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="hidden sm:ml-6 sm:block">
+                                <div class="flex space-x-4">
+                                    <a href="/"
+                                        class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+                                        title="首页">首页</a>
+                                    
+                                    <button class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" title="搜索" v-show="userInfo.user_vip" @click="search_code_ch">搜索</button>
+
+                                    <a :href="detail_data" v-show="userInfo.user_vip"
+                                        class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                                        title="详情页">详情页</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+                            id="userInfo">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sm:hidden hidden" id="mobile-menu">
+                    <div class="space-y-1 px-2 pt-2 pb-3">
+                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                        <a href="/" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+                            title="首页">首页</a>
+                        <a class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" title="搜索" v-show="userInfo.user_vip"
+                                @click="search_code_ch">搜索</a>
+                        <a :href="detail_data" v-show="userInfo.user_vip"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                            title="详情页">详情页</a>
+
+
+                    </div>
+                </div>
+
+
+
+                <div style="display: flex; justify-content: space-between;margin: 10px;" v-if="is_logining==true">
+                    <button @click="selectCategory('全部文章')" :class="{ active: selectedCategory === '全部文章' }">全部</button>
+                    <button @click="selectCategory('类别1')"
+                        :class="{ active: selectedCategory === '类别1' }">{{data_type_list['类别1']}}</button>
+                    <button @click="selectCategory('类别2')"
+                        :class="{ active: selectedCategory === '类别2' }">{{data_type_list['类别2']}}</button>
+                    <button @click="selectCategory('类别3')"
+                        :class="{ active: selectedCategory === '类别3' }">{{data_type_list['类别3']}}</button>
+                    <button @click="selectCategory('类别4')"
+                        :class="{ active: selectedCategory === '类别4' }">{{data_type_list['类别4']}}</button>
+                </div>
+            </div>
+            <div class="search-container" v-if="is_logining==true&&search_code==true">
+                <input type="text" v-model="searchQuery" placeholder="输入关键词搜索" @input="filterArticles">
+                <button @click="key_Search">搜索</button>
+            </div>
+            <label style="height: 5px;" v-else></label>
+
+            <div class="login" v-if="is_logining==false">
+                <form action="" onsubmit="return false" id="form_data">
+                    <!-- <img src="../static/img/403.jpg" class="tupian"> -->
+                    <div class="login_box">
+                        <div id="head_img"><img src="../static/img/tx.png"></div>
+                        <span class="zhuc">新用户？<a @click="reg_zhuce"
+                                style="color: blue;cursor: pointer;">点击注册</a></span>
+                        <input type="text" placeholder="请输入账号" autofocus="" class="shuru">
+                        <button type="submit" value="登录" class="submit" id="submit_ligin" @click="login_now">登录</button>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="list_data" style="margin-top: 5px;" @touchstart="onTouchStart" @touchend="onTouchEnd"
+                v-if="is_logining==true">
+
+                <div v-for="article in filteredArticles" :key="article.acc_id" class="article-container">
+                    <div class="article" style="display: flex; justify-content: space-between;">
+                        <div class="article">
+                            <img :src="article.image" alt="文章图片" @click="nex_page(article)">
+                            </img>
+                            <div class="article-info" @click="nex_page(article)">
+                                <h3>{{ article.title }}</h3>
+                                <!-- <p>{{ article.description }}</p> -->
+                                <p v-html="limitedText(article.description)">{{ article.description }}</p>
+                                <p style="font-size: 14px;">{{ article.author }}</p>
+                            </div>
+                        </div>
+                        <div class="button_vip" v-if="userInfo.vip==true">
+                            <button @click="deleteArticle(article)">删除</button>
+                            <button @click="edit_page(article)">编辑</button>
+
+                        </div>
+
+                    </div>
+
+                    <hr class="article-divider">
+                </div>
+                <div id="bottom_label">
+                    <label for="tttt" id="gggg"></label>
+                </div>
+                
+            </div>
+
+            <div id="bottom_app" v-show="is_logining">
+                <hr id="fhx_bottom">
+                <div class="pagination-container">
+            
+                    <div class="pagination-button" @click="goToPreviousPage" :disabled="currentPage === 1">上一页</div>
+                    <div class="pagination-page">页数: {{ currentPage }} / {{ totalPages }}</div>
+                    <div class="pagination-button" @click="goToNextPage" :disabled="currentPage === totalPages">下一页</div>
+                </div>
+                <footer>
+                    &copy; 2023 by 墨白 @1974249197
+                </footer>
+            </div>
+
+        </div>
+
+        
+    </div>
+
+    
+    <div id="dialog_bili" class="dialog_bili" style="display: none;"></div>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.prod.min.js"></script>
+    <script>
+
+        const app = Vue.createApp({
+
+            mounted() {
+                let that = this
+
+                // 初始化配置
+                that.initData();
+                that.show_dialog()
+
+
+                // 添加事件监听器
+                // window.addEventListener('scroll', this.handleScroll);
+            },
+
+            data() {
+
+                return {
+                    selectedCategory: '全部文章',
+                    articles: data_list,
+                    data_type_list: data_type,
+                    startY: 0,
+                    endY: 0,
+                    searchQuery: "",
+                    refreshing: false,
+                    is_logining: false,
+                    detail_data: "/detail_data?user_name=" + btoa(unescape(encodeURIComponent(document.cookie))),
+                    model_notice_3: false,
+                    model_notice_4: false,
+                    is_login: true,
+                    currentPage: 1,
+                    totalPages: 1,
+                    input: '',
+                    is_chatting: false,
+                    is_mobile: false,
+                    search_code: false,
+                    
+                    userInfo: {
+                        inviteCode: '',
+                        nickname: '会员用户',
+                        headImg: '',
+                        dayTokens: 0,
+                        tokens: 0,
+                        totalTokens: 0,
+                        vip: false,
+                        user_vip: false,
+                    },
+                    user_img_head: user_img_data
+                };
+            },
+            computed: {
+
+                filteredArticles() {
+
+                    if (this.selectedCategory === '全部文章') {
+                        // console.log("刷新")
+
+                        return this.articles;
+                    } else {
+                        return this.articles.filter(article => article.type_data === this.selectedCategory);
+                    }
+                },
+
+
+            },
+            methods: {
+
+                nex_page(article_id) {
+                    console.log(article_id)
+                    localStorage.now_data = JSON.stringify(article_id)
+                    // JSON.parse(localStorage.now_data)
+                    // window.location = "/detail_data"
+                    // console.log(this.detail_data)
+                    if(this.userInfo.user_vip){
+                        window.location = this.detail_data
+                    }else{
+                        alert(`您无权限查看详情数据，请联系管理员qq:${QQ_GM} 申请，您的账号：${this.userInfo.nickname}`)
+                    }
+                    
+                },
+
+                // 编辑更新文章
+                edit_page(article_id) {
+                    console.log(article_id)
+                    localStorage.now_data = JSON.stringify(article_id)
+                    // JSON.parse(localStorage.now_data)
+                    window.location = "/api/postlog?edit_code=1&user=" + this.userInfo.nickname
+                },
+
+                deleteArticle(article) {
+                    // 使用 confirm 方法显示一个提示框
+                    const isConfirmed = confirm("确定要删除这篇文章吗？");
+
+                    // 如果用户点击了确认按钮
+                    if (isConfirmed) {
+                        // 在文章数组中查找要删除的文章的索引
+                        const index = this.articles.findIndex(a => a.acc_id === article.acc_id);
+
+                        // 如果找到了，从数组中删除该文章
+                        if (index !== -1) {
+                            this.articles.splice(index, 1);
+                            this.post_deleteArticle(article.acc_id);
+                        }
+                    } else {
+                        // 用户点击了取消按钮或者关闭了提示框
+                        // 在这里可以添加一些取消删除的操作或者不做任何处理
+                    }
+                },
+
+                post_deleteArticle(article_id) {
+                    // 删除文章
+                    var this_ = this;
+
+                    fetch('/api/deleteArticle', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Authorization': 'Bearer ' + this_.token,
+                        },
+                        body: JSON.stringify({
+                            uuid_data: generateUUID(),
+                            article_id_data: article_id,
+                            cookie_data: document.cookie,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200) {
+                                // this.articles = res.data
+                                alert(res.msg)
+
+                            } else {
+                                this_.showLoginBtn();
+                                this.is_logining = false;
+                                document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                                // 刷新网页
+                                alert(res.msg)
+                                // document.location.reload();
+                                // this_.conv.messages[this_.conv.messages.length - 1].code = 999
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                            this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+
+                // 限制字数
+                limitedText(originalText) {
+                    // 截取文本并返回
+                    return originalText.length > 60 ?
+                        originalText.substring(0, 60) + " ..." :
+                        originalText;
+                },
+
+                selectCategory(category) {
+                    console.log(category)
+                    this.selectedCategory = category;
+
+                    // 点击类目时刷新
+                    // this.get_data_list();
+                },
+
+
+
+                refreshData() {
+                    // 这里可以调用你的刷新数据的方法
+                    // this.currentPage = 1; // 重置页码
+                    this.articles = []; // 清空已有数据
+                    this.get_data_list();
+                },
+
+                // 上一页
+                goToPreviousPage() {
+                    // this.articles = []; // 清空已有数据
+                    // this.get_data_list();
+
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                        this.refreshData()
+                        // console.log(this.currentPage)
+                        // 调用获取数据的方法或其他逻辑...
+                    } else {
+                        this.currentPage = this.totalPages
+                        this.refreshData()
+                    }
+                },
+                // 下一页
+                goToNextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                        this.refreshData()
+                        // 调用获取数据的方法或其他逻辑...
+                    } else {
+                        this.currentPage = 1
+                        this.refreshData()
+                    }
+
+
+                    // console.log(this.currentPage)
+                },
+                search_code_ch(){
+                    // 显示搜索
+                    this.search_code = !this.search_code
+                    document.getElementById('mobile-menu').style.display = 'none'
+                },
+
+                get_data_list() {
+
+
+                    var this_ = this;
+
+                    fetch('/api/get_data_list', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Authorization': 'Bearer ' + this_.token,
+                        },
+                        body: JSON.stringify({
+                            uuid_data: generateUUID(),
+                            currentPage: this.currentPage,
+                            searchQuery: this.searchQuery,
+                            cookie_data: document.cookie,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200) {
+                                this.articles = res.data
+                                this.totalPages = res.total_pages
+
+                            } else {
+
+
+                                this_.showLoginBtn();
+                                this.is_logining = false;
+                                document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                                // 刷新网页
+                                alert(res.msg)
+                                // document.location.reload();
+                                // this_.conv.messages[this_.conv.messages.length - 1].code = 999
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                            this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+                key_Search(){
+                    // 关键词搜索
+                    this.refreshData()
+                    this.searchQuery = ""
+                    this.search_code = !this.search_code
+                    
+                },
+
+                initData() {
+                    // console.log(filteredArticles)
+                    this.token = document.cookie;
+                    if (document.cookie.indexOf("wechatName=") !== -1) {
+                        // 检查登录
+                        this.chect_login();
+                    } else {
+                        this.showLoginBtn();
+                    }
+                },
+                chect_login() {
+                    var this_ = this;
+
+                    fetch('/api/chet_login', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+         
+                        },
+                        body: JSON.stringify({
+                            uuid_data: generateUUID(),
+                         
+                            cookie_data: document.cookie,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200) {
+                                this.getUserInfo();
+
+                            } else {
+                                this_.showLoginBtn();
+                                this.is_logining = false;
+                                document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                                // 刷新网页
+                                alert(res.msg)
+                                // document.location.reload();
+                                // this_.conv.messages[this_.conv.messages.length - 1].code = 999
+                            }
+                        }).catch(function (err) {
+                            // this.is_logining = false;
+                            console.log(err);
+                            // document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                            // this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+                // 注册账号
+                zhuce_use(user_name_data) {
+                    var this_ = this;
+
+                    fetch('/api/zhuce_use', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Authorization': 'Bearer ' + this_.token,
+                        },
+                        body: JSON.stringify({
+                            uuid_data: generateUUID(),
+                            
+                            user_name_data: user_name_data,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200) {
+                               
+                               // 创建一个文本区域元素
+                                var textArea = document.createElement("textarea");
+
+                                // 设置文本区域的值为 res.msg
+                                textArea.value = res.user_name;
+
+                                // 将文本区域添加到文档中
+                                document.body.appendChild(textArea);
+
+                                // 选中文本区域的内容
+                                textArea.select();
+
+                                // 尝试执行复制命令
+                                document.execCommand('copy');
+
+                                // 移除添加的文本区域元素
+                                document.body.removeChild(textArea);
+                                document.querySelector('.shuru').value = res.user_name
+                                // 提示用户已复制
+                                alert(res.msg);
+                            } else {
+                                this_.showLoginBtn();
+                                this.is_logining = false;
+                 
+                                // 刷新网页
+                                alert(res.msg)
+                                
+                                // document.location.reload();
+                                // this_.conv.messages[this_.conv.messages.length - 1].code = 999
+                            }
+                        }).catch(function (err) {
+                            // this.is_logining = false;
+                            console.log(err);
+                            // document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                            // this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+
+                // 登录
+                getUserInfo() {
+                    var this_ = this;
+
+                    fetch('/api/get_user_info', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Authorization': 'Bearer ' + this_.token,
+                        },
+                        body: JSON.stringify({
+                            uuid_data: generateUUID(),
+                            img_data: '6666',
+                            cookie_data: document.cookie,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200 && res.data.inviteCode) {
+                                var user_img = textToBase64(res.data.nickname.substring(0, 2))
+                                // 文字转头像
+                                this_.userInfo.headImg = user_img;
+                                this_.user_img_head = user_img
+
+
+                                this_.is_login = true;
+                                this_.userInfo.inviteCode = res.data.inviteCode;
+                                this_.userInfo.nickname = res.data.nickname;
+
+
+                                this_.userInfo.tokens = res.data.tokens;
+                                this_.userInfo.tasteNum = res.data.tasteNum;
+                                this_.userInfo.totalTokens = res.data.totalTokens;
+                                this_.userInfo.vip = res.data.vip;
+                                this_.userInfo.user_vip = res.data.user_vip;
+                                
+
+                                this_.userInfo.vipGroup = res.data.vipGroup;
+                                this_.showLoginInfo();
+
+
+                                this.is_logining = true;
+
+                                this.detail_data = "/detail_data?user_name=" + btoa(unescape(encodeURIComponent(document.cookie)));
+                                this.get_data_list()
+
+                                localStorage.user_name = this_.userInfo.nickname;
+
+                                // document.getElementById("user_img").src= user_img
+                                // this_.saveConversationLocal();
+                            } else {
+                                this_.showLoginBtn();
+                                this.is_logining = false;
+                                document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                                // 刷新网页
+                                alert(res.msg)
+                                // document.location.reload();
+                                // this_.conv.messages[this_.conv.messages.length - 1].code = 999
+                            }
+                        }).catch(function (err) {
+                            // this.is_logining = false;
+                            console.log(err);
+                            // document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                            // this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+                showLoginInfo() {
+                    var html = '<div class="relative ml-3">';
+                    html += '<div>';
+                    html += '<button id="btn-profile" type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-expanded="false" aria-haspopup="true">';
+                    html += '<span class="sr-only">Open user menu</span>';
+                    html += '<img class="h-8 w-8 rounded-full" src="' + this.userInfo.headImg + '" alt="">';
+                    html += '</button>';
+                    html += '</div>';
+                    html += '<div id="profile-dropdown" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" style="width: 6rem; display: none;">';
+                    if (this.userInfo.vip == true) {
+                        // console.log(this.userInfo.nickname)
+                        html += '<a href="/api/postlog?user=' + this.userInfo.nickname + '" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">发布帖子</a>';
+                    }
+                    html += '<button class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">退出登录</button>';
+                    html += '</div>';
+                    html += '</div>';
+                    var userInfo = document.getElementById("userInfo");
+                    userInfo.innerHTML = html;
+                    document.getElementById('btn-profile').onclick = function () {
+                        var dropdown = document.getElementById('profile-dropdown')
+                        if (!dropdown.style.display || dropdown.style.display == 'none') {
+                            dropdown.style.display = 'block';
+                        } else if (dropdown.style.display == 'block') {
+                            dropdown.style.display = 'none'
+                        }
+                    }
+                    document.getElementById('profile-dropdown').onmousedown = function (e) {
+                        e.preventDefault()
+                    }
+                    document.getElementById('btn-profile').onblur = function (e) {
+                        var dropdown = document.getElementById('profile-dropdown')
+                        dropdown.style.display = 'none'
+                    }
+                    var this_ = this;
+                    document.getElementById('user-menu-item-2').onclick = function () {
+                        // localStorage.removeItem('token');
+                        // 删除cookie
+                        document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        // 刷新网页
+
+
+                        this_.showLoginBtn();
+                        this.is_logining = false;
+                        document.location.reload();
+                    }
+                },
+                showLoginBtn() {
+                    var userInfoObj = document.getElementById("userInfo");
+                    var html = '<div class="relative ml-3">';
+                    html += '<div>';
+                    html += '<a class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"  id="user-menu-button" aria-expanded="false" aria-haspopup="true">登录</a>';
+                    html += '</div>';
+                    html += '</div>';
+                    userInfoObj.innerHTML = html;
+
+
+                    document.getElementById("user-menu-button").addEventListener('click', function (event) {
+                        if (event.target === this) {
+                            // 右上角登录按钮功能
+                            // document.getElementById('dialog_bili').style.display = 'block';
+
+
+                        }
+                    });
+
+
+                },
+                // 注册按钮功能
+                reg_zhuce() {
+                    document.getElementById('dialog_bili').style.display = 'block';
+                },
+
+                login_now() {
+                    var hck = CryptoJS.MD5(generateUUID()) + '-' + Date.now()
+                    var val = document.querySelector('.shuru').value;
+                    const sck = val + '-' + hck;
+                    if (val.length > 0) {
+                        document.cookie = 'wechatName=' + sck + ';path=/;Max-Age=' + 3600;
+                        this.getUserInfo();
+                        document.getElementById('dialog_bili').style.display = 'none';
+
+                        // document.querySelector('.welcome').innerHTML += ',' + val;
+                        // document.querySelector('.welcome').textContent = 'welcome,' + val;
+                        // wecharName = val;
+                        // text.focus()
+                    }
+                },
+                click_login() {
+                    document.getElementById('dialog_bili').style.display = 'block';
+                },
+                show_dialog() {
+                    var this_ = this;
+                    var userInfoObj = document.getElementById("dialog_bili");
+                    html = `
+                <div class="dialog_bili-content">
+                    <span class="close">×</span>
+
+                    <h2>登录注册</h2>
+                    <p>输入您的账号</p>
+                    <p></p>
+                    <input type="text" id="video-link" placeholder="请输入账号">
+                    <button id="submit-btn">注册申请</button>
+         
+                </div>
+                `
+
+                    userInfoObj.innerHTML = html;
+
+
+                    function get_pei() {
+
+
+
+                        var modal = document.getElementById('dialog_bili');
+                        var closeButton = document.querySelector('.close');
+                        var submitButton = document.getElementById('submit-btn');
+                        var clearButton = document.getElementById('clear-btn');
+                        var videoLinkInput = document.getElementById('video-link');
+
+                        var submit_ligin = document.getElementById('submit_ligin');
+
+
+
+                        submitButton.addEventListener('click', function (event) {
+
+                            var hck = CryptoJS.MD5(generateUUID()) + '-' + Date.now()
+                            var val = videoLinkInput.value;
+                            // const sck = val + '-' + hck;
+                         
+                            
+                            if (val.length > 1 && val.length < 7) {
+
+                                
+                                // document.cookie = 'wechatName=' + sck + ';path=/;Max-Age=' + 3600;
+                                // this_.getUserInfo();
+                                this_.zhuce_use(val);
+                                document.getElementById('dialog_bili').style.display = 'none';
+                                // document.location.reload();
+                                // document.querySelector('.welcome').innerHTML += ',' + val;
+                                // document.querySelector('.welcome').textContent = 'welcome,' + val;
+                                // wecharName = val;
+                                // text.focus()
+                            }else{
+                                alert("输入大于4小于6的账号")
+                            }
+
+                        });
+
+
+                        // submit_ligin.addEventListener('click', function (event) {
+
+
+
+                        // });
+
+                        closeButton.addEventListener('click', function (event) {
+                            if (event.target === this) {
+                                document.getElementById('dialog_bili').style.display = 'none';
+
+                            }
+                        });
+
+                        document.getElementById('dialog_bili').addEventListener('click', function (event) {
+                            if (event.target === this) {
+                                document.getElementById('dialog_bili').style.display = 'none';
+
+                            }
+                        });
+
+                        document.getElementById('dialog_bili').addEventListener('click', function (event) {
+                            if (event.target === this) {
+
+                                document.getElementById('dialog_bili').style.display = 'none';
+                            }
+                        });
+
+                    }
+                    get_pei()
+                },
+
+
+                handleScroll() {
+
+                    // let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+                    // // 在这里你可以根据需要的条件判断是否执行刷新操作
+                    // if (scrollTop === 0) {
+                    //     // 用户已经滚动到列表的顶部，执行刷新操作
+                    //     // this.refreshData();
+                    // }
+                },
+
+                // 记录触摸开始的位置
+                onTouchStart(event) {
+                    this.startY = event.touches[0].clientY;
+                },
+
+                // 记录触摸结束的位置，判断是否执行刷新
+                onTouchEnd(event) {
+                    this.endY = event.changedTouches[0].clientY;
+                    this.checkRefresh();
+                },
+
+                // 判断是否执行刷新
+                checkRefresh() {
+                    // 定义一个阈值，当下拉的距离超过该阈值时执行刷新
+                    const refreshThreshold = 600;
+
+                    // 计算下拉的距离
+                    const distance = this.endY - this.startY;
+
+                    // 判断是否下拉超过阈值
+                    if (distance > refreshThreshold) {
+                        // 执行刷新操作
+                        // this.refreshData();
+                    }
+                },
+
+
+
+            },
+
+
+        });
+
+        app.mount('#app');
+    </script>
+
+    <script>
+
+        document.getElementById('btn-mobile-menu').onclick = function () {
+            // console.log('click')
+            var content = document.getElementById('mobile-menu')
+            // console.log(!content.style.display)
+            if (!content.style.display || content.style.display == 'none') {
+                // console.log('show')
+                content.style.display = 'block';
+            }
+            else if (content.style.display == 'block') {
+                // console.log('hide')
+                content.style.display = 'none'
+                
+            }
+        }
+    </script>
+</body>
+
+</html>
