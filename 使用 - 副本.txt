@@ -1,0 +1,4 @@
+git clone -b main https://github.com/anzhiyu-c/hexo-theme-anzhiyu.git themes/anzhiyu
+git add .
+git commit -m'第二次上传'
+git push
