@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <style>
+    </style>
+    <link rel="stylesheet" type="text/css" href="../static/xqy/user.css" />
+</head>
+
+<body>
+    <div class="top-bar">
+        <div id="back" onclick="back_html()">返回</div>
+        <div>用户管理</div>
+        <script>
+            function back_html() {
+                console.log("返回")
+                window.location.replace(document.referrer);
+            }
+        </script>
+    </div>
+
+    <div id="app">
+        <div id="user-form">
+            <input type="text" v-model="searchUsername" placeholder="输入用户名">
+            <button @click="searchUsers">搜索用户</button>
+        </div>
+
+
+
+        <div id="user-list-container" class="article-info">
+            <div v-for="user in filteredUsers" :key="user.user_name" class="user-card">
+                <h3>{{ user.user_name }}</h3>
+                <p v-if="user.user_vip" class="vip-status">VIP</p>
+                <p v-else class="vip-status" style="color: #fff;">普通用户</p>
+                <button @click="editUser(user)">编辑</button>
+                <button @click="deleteUser(user)">删除</button>
+                <button @click="toggleVipStatus(user)">切换VIP状态</button>
+            </div>
+        </div>
+
+        <div id="user-form">
+            <!-- <h2>添加新用户</h2> -->
+            <div id="add_user">
+                <input type="text" v-model="newUser.name" placeholder="用户名">
+                <label><input type="checkbox" v-model="newUser.vip"> VIP</label>
+            </div>
+
+            <button @click="addUser">添加</button>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
+    <script>
+        const app_detail = Vue.createApp({
+             mounted() {
+                this.searchUsers()
+             },
+            data() {
+                return {
+                    searchUsername: '',
+                    newUser: {
+                        name: '',
+                        vip: false,
+                    },
+                    users: [
+                        { user_name: "墨白", user_vip: false },
+                        { user_name: "墨白1", user_vip: true },
+                        { user_name: "墨白2", user_vip: false },
+                        { user_name: "墨白3", user_vip: false },
+                        { user_name: "墨白1", user_vip: true },
+                        { user_name: "墨白2", user_vip: false },
+                        { user_name: "墨白3", user_vip: false },
+                    ],
+                };
+            },
+            computed: {
+                filteredUsers() {
+                    var data_new_list = this.users.filter(user => user.user_name.includes(this.searchUsername))
+                    console.log(data_new_list)
+                    return data_new_list;
+                }
+            },
+            methods: {
+                searchUsers() {
+                    // 搜索数据库用户逻辑
+                    console.log('搜索用户', this.searchUsername);
+                    this.users = []
+    
+                    this.post_data_api(act_type='查询账号', searchUsername_data = this.searchUsername, add_data = null, user_vip = false, delete_user = null)
+                    // this.post_data_api(act_type = '申请账号', searchUsername_data = null, add_data = add_data_tem, user_vip = false, delete_user = null)
+                    // this.post_data_api(act_type = '删除账号', searchUsername_data = null, add_data = null, user_vip = false, delete_user = user)
+                    
+
+                },
+
+                addUser() {
+                    // 添加用户逻辑
+                    add_data_tem = {
+                        user_name: this.newUser.name,
+                        user_vip: this.newUser.vip,
+                    }
+                    this.users.push(add_data_tem);
+                    this.post_data_api(act_type = '申请账号', searchUsername_data = null, add_data = add_data_tem, user_vip = false, delete_user = null)
+
+                    this.newUser.name = '';
+                    this.newUser.vip = false;
+                    console.log('添加用户', add_data_tem);
+                    // 
+                },
+                editUser(user) {
+                    // 编辑用户逻辑
+                    this.newUser.name = user.user_name
+                    this.newUser.vip = user.user_vip
+                    
+                    // console.log('编辑用户', user);
+
+                },
+                deleteUser(user) {
+                    // 删除用户逻辑
+                    this.users = this.users.filter(u => u !== user);
+                    console.log('删除用户', user);
+                    
+                    this.post_data_api(act_type = '删除账号', searchUsername_data = null, add_data = null, user_vip = false, delete_user = user)
+                },
+                toggleVipStatus(user) {
+                    // 切换VIP状态逻辑
+                    
+                    user.user_vip = !user.user_vip;
+                    console.log('切换VIP状态', user);
+                    this.post_data_api(act_type = '申请账号', searchUsername_data = null, add_data = user, user_vip = false, delete_user = null)
+                    
+                },
+
+                post_data_api(act_type,searchUsername_data=null, add_data=null,user_vip=false,delete_user=null) {
+                    var this_ = this;
+
+                    fetch("/api/search_Username", {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // 'Authorization': 'Bearer ' + this_.token,
+                        },
+                        body: JSON.stringify({
+                            act_type: act_type,
+                            searchUsername: searchUsername_data,
+                            add_data: add_data,
+                            user_vip: user_vip,
+                            delete_user: delete_user,
+                            // cookie_data: document.cookie,
+
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            if (res.code == 200) {
+                                if (act_type=="查询账号"){
+                                    this.users = res.data.data_list
+                                }else{
+                                    alert(res.data.res)
+                                }
+
+                                
+                                // this.totalPages = res.total_pages
+                            } else {
+                                alert(res.data.res)
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                            // this_.showLoginBtn();
+                        }).then(function () {
+
+                        });
+                },
+
+            },
+        });
+
+        app_detail.mount('#app');
+    </script>
+</body>
+
+</html>
