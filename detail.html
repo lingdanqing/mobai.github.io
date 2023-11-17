@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章详情</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/xqy/xqy.css" />
+    <script>
+        var data_list = JSON.parse(localStorage.now_data)
+    </script>
+</head>
+
+<body style="background-color: #343434;">
+    <div class="top-bar">
+        <div id="back" onclick="back_html()">返回</div>
+        <div>文章详情</div>
+        <script>
+            function back_html(){
+                console.log("返回")
+                // window.location.href = document.referrer;
+                window.location.replace(document.referrer);
+            }
+        </script>
+    </div>
+
+    <div id="app" class="app_xqy" style="background-color: #343434;color:#fff;margin-top: -20px;">
+        
+        <div class="article-info">
+            <h1>{{ article.title }}</h1>
+            <p>{{ article.author }}</p>
+            <!-- <p>{{ article.description }}</p> -->
+            <div v-html="article.detail"></div>
+        </div>
+    </div>
+
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.prod.min.js"></script>
+    <script>
+        const app_detail = Vue.createApp({
+            data() {
+                return {
+                    message: '文章详情',
+                    article: data_list,
+
+
+                };
+            }
+        });
+
+        app_detail.mount('#app');
+    </script>
+</body>
+
+</html>

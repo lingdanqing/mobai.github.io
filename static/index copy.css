@@ -1,0 +1,122 @@
+body {
+    background: #000000d6;
+    color: #fff
+}
+
+.list_data .article {
+    display: flex;
+    /*     margin-top: 20px; */
+    margin: 5px;
+    /* margin-bottom: 20px; */
+    margin-left: 5px;
+}
+
+.article img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.article-info {
+    display: flex;
+
+    margin-left: 15px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.button_vip {
+
+    display: flex;
+    padding: 10px;
+    color: #0089f7;
+    flex-direction: column;
+    justify-content: space-between;
+    white-space: nowrap;
+}
+
+
+.article-info h3 {
+    margin: 0;
+}
+
+.article-info p {
+    font-size: 10px;
+    /*     margin-top: 10px; */
+    color: #d1d1d1;
+}
+
+.active {
+    text-decoration: underline;
+    color: #007BFF;
+    background-color: #e8e8e800;
+    /* 使用Google蓝色，可以根据需要调整颜色值 */
+    font-weight: bold;
+    /* 使文本更加突出 */
+}
+
+.article-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.article-divider {
+    margin: 10px 0px;
+    /* 调整分割线的上下间距 */
+    border: 1px solid #7878788c;
+    /* 分割线样式 */
+}
+
+
+.category-buttons {
+    position: sticky;
+    top: 0;
+    background-color: #211f1f;
+    /* 保持背景色，避免穿透效果 */
+    z-index: 1;
+    /* 确保在其他元素之上 */
+}
+
+.list_data {
+    width: 100%;
+    max-height: 600px;
+    /* 设置最大高度，根据需要进行调整 */
+    overflow-y: auto;
+    /* 添加垂直滚动条 */
+    /* 填充宽度 */
+    /*     padding-top: 50px; */
+    /* 确保内容不被category-buttons遮挡 */
+}
+
+/* .pull-to-refresh {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #888;
+    transition: all 0.3s;
+} */
+
+
+
+.pull-to-refresh {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #888;
+    transition: all 0.3s;
+}
+
+.pull-to-refresh div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pull-to-refresh img {
+    margin-right: 10px;
+}
+
+.pull-to-refresh.refreshing {
+    color: #333;
+}

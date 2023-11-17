@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布帖子</title>
+    <link rel="stylesheet" type="text/css" href="../static/xqy/xqy.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/xqy/quill.snow.css"/>
+
+    <!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/interactjs@1.10.10/dist/interact.min.css"> -->
+
+    <script src="../static/js/vue.global.prod.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/quill.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/interact.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.prod.min.js"></script> -->
+    <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+        <script src="https://unpkg.com/interactjs@1.10.10/dist/interact.min.js"></script> -->
+    <!-- 引入 uuid 库 -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/3.3.2/uuid.js"></script> -->
+    <!-- 引入 CryptoJS 库 -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script> -->
+
+   
+    <script>
+        var data_list = JSON.parse(localStorage.now_data)
+        // 获取当前页面的 URL
+        var currentUrl = window.location.href;
+        // 通过 URL 对象解析 URL
+        var url = new URL(currentUrl);
+        // 获取 user 参数的值
+        const edit_code = url.searchParams.get("edit_code");
+    </script>
+
+        
+</head>
+
+<body>
+    <div id="app">
+        <div class="article-info">
+            <div v-show="!configMode">
+            <label for="title">标题:</label>
+            <input type="text" v-model="title" id="title">
+
+            <label for="author">时间:</label>
+            <input type="text" v-model="author" id="author">
+
+            <label for="description">简介:</label>
+            <textarea v-model="description" id="description"></textarea>
+
+            <!-- <label for="html_zy" @click="insert_html">输入网页源码:</label>
+            <textarea v-model="html_zy" id="html_zy"></textarea> -->
+
+            <label for="type">类别:</label>
+            <select id="type" v-model="typeData">
+                <option value="类别1">{{data_type_list['类别1']}}</option>
+                <option value="类别2">{{data_type_list['类别2']}}</option>
+                <option value="类别3">{{data_type_list['类别3']}}</option>
+                <option value="类别4">{{data_type_list['类别4']}}</option>
+            </select>
+
+
+            <label for="type">是否置顶:</label>
+            <select id="type" v-model="is_top">
+                <option value="否">否</option>
+                <option value="是">是</option>
+            
+            </select>
+            
+
+
+            <label for="type">上传封面</label>
+            <input type="file" id="imageInput" name="image" accept="image/*" @change="uploadImage">
+        </div>
+            <button @click="toggleConfigMode">{{ configMode ? '展开配置信息' : '隐藏配置信息' }}</button>
+            
+
+        </div>
+
+        <!-- 添加上传封面图片的按钮 -->
+
+        
+        <div class="quill-toolbar">
+            <button @click="insertImage">插入图片</button>
+            
+            <button @click="togglePreview">{{ previewMode ? '编辑' : '预览' }}</button>
+            
+            <button @click="save">发布</button>
+        </div>
+
+        <!-- 使用v-show控制编辑框的显示与隐藏 -->
+        <div class="quill-editor" ref="editor" v-show="!previewMode"></div>
+
+        <div v-if="previewMode" class="preview">
+            
+            <h2>预览:</h2>
+            <hr>
+            <h3>{{ title }}</h3>
+            <p>时间: {{ author }}</p>
+            <p>类别: {{ typeData }}</p>
+            <p>置顶: {{ is_top }}</p>
+            <p>{{ description }}</p>
+            <h3>图片信息状态</h3>
+            <p>页面图片总数: {{ uploadedImages_nums }}</p>
+            <p>已上传总数:{{ uploadedImages_statas }}</p>
+            <p id="released_code" :style="{ color: releasedCodeColor }">是否可发布:{{ uploadedImages_statas_code }}</p>
+
+            <hr>
+          
+            <div class="quill-preview" v-html="editorContent"></div>
+        </div>
+
+        
+    </div>
+
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                // var data_type = JSON.parse(localStorage.data_type)
+                return {
+                    acc_id:"",
+                    title: '',
+                    author: '',
+                    typeData: '类别1',
+                    description: '',
+                    head_img: "",
+                    html_zy: "",
+                    edit_code_statas: edit_code,
+                    is_top: '否', // 是否置顶
+                    article: data_list,
+                    data_type_list: JSON.parse(localStorage.data_type),
+                    
+                    editorContent: '',
+                    previewMode: false,
+                    configMode: false, // 隐藏配置
+                    uploadedImage: null,
+                    uploadedImages: [],
+
+                    uploadedImages_statas: 0,
+                    uploadedImages_nums:'',
+                    formattedDate:'',
+                    uploadedImages_statas_code:'等待中....',
+                };
+            },
+            mounted() {
+                this.initQuill();
+            },
+
+            computed: {
+                // 自动计算属性
+                releasedCodeColor() {
+                    // 在这里根据 uploadedImages_statas_code 的值动态计算颜色
+                    // 例如，如果 uploadedImages_statas_code 为某个特定值，返回相应的颜色
+                    if (this.uploadedImages_statas_code === "预览成功，现在可以点击发布了") {
+                        return "green"; // 可以是颜色名称或颜色值
+                    } else {
+                        return "red"; // 默认颜色
+                    }
+                },
+            },
+            methods: {
+                initQuill() {
+                    this.quill = new Quill(this.$refs.editor, {
+                        theme: 'snow',
+                        // theme: 'bubble',
+                        modules: {
+                            toolbar: [
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'header': 1 }, { 'header': 2 }],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['link', 'image'],
+                                ['clean']
+                            ]
+                        }
+                    });
+
+                    var currentDate = new Date();
+                    this.formattedDate = currentDate.toISOString().replace("T", " ").replace("-", "/").replace("-", "/").split(".")[0];
+
+                    this.author = this.formattedDate;
+                    this.title = "新建blog_"+ Math.floor(new Date().getTime() / 1000);
+                    this.description='blog简介'
+                    // 设置编辑器内容为 <p>墨白</p>
+                    // this.quill.root.innerHTML = '<p>墨白</p>';
+                    // console.log(this.data_list.detail)
+                    // 编辑更新帖子
+                    if(this.edit_code_statas && this.edit_code_statas=="1"){
+                        this.quill.root.innerHTML = this.article.detail;
+                        this.title = this.article.title
+                        this.author = this.article.author
+                        this.typeData = this.article.type_data
+                        this.description = this.article.description
+
+                        this.is_top = this.article.is_top
+                        this.head_img = newUrl = this.article.image
+                        this.acc_id = this.article.acc_id
+                    }
+                    
+
+                    this.quill.on('text-change', () => {
+                        this.editorContent = this.quill.root.innerHTML;
+                    });
+
+                    interact('.ql-image').resizable({
+                        edges: { left: true, right: true, bottom: true, top: true }
+                    }).draggable({
+                        inertia: true,
+                        modifiers: [
+                            interact.modifiers.restrictRect({
+                                restriction: 'parent'
+                            })
+                        ]
+                    }).on('resizemove', (event) => {
+                        const target = event.target;
+                        const x = (parseFloat(target.getAttribute('data-x')) || 0);
+                        const y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                        target.style.width = event.rect.width + 'px';
+                        target.style.height = event.rect.height + 'px';
+
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    });
+                },
+                insertImage() {
+                    // const url = prompt('请输入图片链接:');
+                    // 触发文件选择
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*';
+                    fileInput.addEventListener('change', (event) => {
+                        this.uploadImage(event);
+                    });
+                    fileInput.click();
+
+                    
+                },
+                // insert_html() {
+                //     // const url = prompt('请输入图片链接:');
+                //     // 触发文件选择
+                //     console.log(this.html_zy)
+                //     console.log(this.quill)
+                //     this.quill.root.innerHTML = this.html_zy;
+
+                    
+                // },
+
+
+                // 单个图片插入，触发
+                async uploadImage(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        try {
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            
+                            // 使用fetch或者axios等库将formData发送到服务器
+                            const response = await fetch('/upload', {
+                            // const response = await fetch('https://png.cm/app/upload.php', {
+                                method: 'POST',
+                                body: formData,
+                            });
+
+                            if (response.ok) {
+                                const result = await response.json();
+                                // 服务器返回的图片地址
+                                const imageUrl = result.message;
+                                console.log(imageUrl)
+
+                                // 保存到uploadedImage变量
+                                this.uploadedImage = imageUrl;
+                                
+
+                                // url = "http://"+window.location.host +imageUrl
+
+                                // url = imageUrl
+                                if (imageUrl) {
+                                    this.quill.focus();
+                                    const range = this.quill.getSelection();
+                                    this.quill.insertEmbed(range.index, 'image', imageUrl);
+                                }
+
+                                console.log('Uploaded image:', imageUrl);
+                            } else {
+                                alert('Image upload failed.');
+                            }
+                        } catch (error) {
+                            alert('Error uploading image:', error);
+                        }
+                    }
+                },
+                
+    
+
+                async togglePreview() {
+                    this.previewMode = !this.previewMode;
+                    if (this.previewMode) {
+                        // 如果是预览模式，上传所有base64图片链接到服务器
+                        // 隐藏工具栏
+                        document.querySelector(".ql-toolbar.ql-snow").style.display = "none"
+                        await this.uploadAllImages();
+                    }else{
+                        // 显示工具栏
+                        document.querySelector(".ql-toolbar.ql-snow").style.display = "block"
+                        // 重置
+                        this.uploadedImages_statas = 0
+                        this.uploadedImages_nums = ""
+                        this.uploadedImages_statas_code = "等待中..."
+                    }
+                    // this.configMode = false;
+                },
+
+
+                async uploadAllImages() {
+                    // 获取Quill编辑器中的所有图片
+                    const images = this.$refs.editor.querySelectorAll('img');
+                    this.uploadedImages_nums = images.length
+                    
+                    // alert(`获取到页面有${images.length}个图片，预览期间会上传到服务器，请等待预览完成的提示`)
+                    this.uploadedImages_statas_code = `获取到页面有${images.length}个图片，预览期间会上传到服务器，请等待预览完成的提示`
+                    // document.querySelector("#released_code").style.color = "#f44336"
+                    // 遍历图片并上传
+                    for (const image of images) {
+                        const src = image.getAttribute('src');
+                        if (src.startsWith('data:image')) {
+                            // 如果是base64数据，则上传到服务器
+
+                            const imageUrl = await this.uploadImageBase64(src);
+                            // 将服务器返回的链接设置到图片上
+                            image.setAttribute('src', imageUrl);
+                            this.uploadedImages_statas = this.uploadedImages_statas+1
+                        }
+                    }
+                    this.uploadedImages_statas = images.length
+                    this.uploadedImages_statas_code = "预览成功，现在可以点击发布了"
+                    // document.querySelector("#released_code").style.color = "#03a9f4"
+
+                    
+
+                    // alert("预览成功，现在可以点击发布了")
+                },
+
+                async uploadImageBase64(base64Data) {
+                    try {
+                        // 将base64数据转为Blob对象
+                        const blob = await this.base64ToBlob(base64Data);
+
+                        // 构建FormData对象
+                        const formData = new FormData();
+                        formData.append('file', blob, 'image.png');
+
+                        // 将FormData发送到服务器
+                        const response = await fetch('/upload', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            // 返回服务器返回的图片链接
+                            return result.message;
+                        } else {
+                            throw new Error('Image upload failed.');
+                        }
+                    } catch (error) {
+                        console.error('Error uploading image:', error);
+                        throw error;
+                    }
+                },
+
+                base64ToBlob(base64Data) {
+                    return new Promise((resolve, reject) => {
+                        const byteCharacters = atob(base64Data.split(',')[1]);
+                        const byteNumbers = new Array(byteCharacters.length);
+
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+
+                        const byteArray = new Uint8Array(byteNumbers);
+                        const blob = new Blob([byteArray], { type: 'image/png' });
+                        resolve(blob);
+                    });
+                },
+
+
+
+                toggleConfigMode() {
+                    this.configMode = !this.configMode;
+                },
+
+                 post_blog_data(data_pppp) {
+
+
+                    var this_ = this;
+
+                    fetch('/api/post_blog', {
+
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            cookie_data: document.cookie,
+                            data: data_pppp,
+                            
+                        }
+                        )
+                    })
+                        .then(response => response.json()).then(res => {
+                            // .then(function (res) {
+                            if (res.code == 200) {
+                                
+                                alert(res.msg)
+
+                            } else {
+                                document.cookie = 'wechatName' + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                                // 刷新网页
+                                alert(res.msg)
+                                // document.location.reload();
+                                
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                            
+                        }).then(function () {
+
+                        });
+                },
+
+                async save() {
+
+                    await this.togglePreview()
+
+                    var newUrl;
+                    if (this.uploadedImage){
+                        const path = this.uploadedImage.substring(this.uploadedImage.indexOf('/i/'));
+                        const host = this.uploadedImage.substring('', this.uploadedImage.indexOf('/i/'))
+
+                        // 构建新的URL
+                        newUrl = `${host}/app/thumb.php?img=${path}`;
+                        console.log(newUrl);
+                        
+                        
+                    }else{
+                        newUrl = "/static/tz_img/4031.jpg"
+                        
+                    }
+                    if (this.head_img === ''){
+                        this.head_img = newUrl
+                    }
+                    
+                    const post_data = {
+                        acc_id: this.acc_id,
+                        image: this.head_img || "/static/tz_img/4031.jpg", // 使用上传的图片，如果没有则为空字符串
+                        title: this.title,
+                        author: this.author,
+                        type_data: this.typeData,
+                        is_top: this.is_top,
+                        description: this.description,
+                        detail: this.editorContent,
+                    };
+                    
+                    // 在实际应用中，你可以将post对象发送到服务器保存
+                    console.log(post_data);
+                    this.post_blog_data(post_data)
+                },
+
+
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

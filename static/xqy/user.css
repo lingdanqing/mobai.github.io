@@ -1,0 +1,143 @@
+body {
+
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+
+    background-color: #343434;
+    color: #fff;
+
+    font-family: Arial, sans-serif;
+
+
+}
+
+.top-bar {
+
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    background-color: #030303;
+    color: #fff;
+    padding: 10px;
+
+    text-align: center;
+    position: fixed;
+
+
+    top: 0;
+    width: 100%;
+
+    z-index: 1000;
+}
+
+.top-bar div {
+    margin-right: 30px;
+}
+
+#app {
+    background-color: #343434;
+    max-width: 800px;
+    margin: 20px auto;
+
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#user-list-container {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: auto;
+    height: 75vh
+}
+
+.user-card {
+    background-color: #1a1a1a;
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+    max-height: 130px;
+
+
+}
+
+.user-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.user-card p {
+    margin: 20px 0;
+}
+
+.user-card .vip-status {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.article-info input,
+.article-info button,
+.article-info select,
+.article-info textarea {
+
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.article-info button {
+    /* width: 100%;
+        padding: 8px; */
+    background: #40a1ee;
+    color: #fff;
+    border: 1px solid #5a5959;
+    margin-bottom: 2px;
+
+}
+
+
+#user-form {
+    margin-top: 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+#user-form input,
+#user-form button {
+    padding: 5px;
+    font-size: 15px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#user-form input {
+    border: 2px solid #b6aeae;
+    border-radius: 5px;
+    color: #242424;
+    background-color: #ffffff;
+}
+
+
+
+@media (min-width: 340px) and (max-width:600px) {}

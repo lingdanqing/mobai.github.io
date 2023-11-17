@@ -1,0 +1,238 @@
+.dialog_bili {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.dialog_bili-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #292929;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 83%;
+    text-align: center;
+}
+
+h2 {
+    margin: 10px 0;
+}
+
+.dialog_bili p {
+    margin: 10px;
+    font-size: 14px;
+}
+
+.dialog_bili input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.dialog_bili button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.yinsz {
+    padding: 4px 20px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    width: 76%;
+    margin-left: 15px;
+}
+
+.dialog_bili-content .form-group {
+    margin-bottom: 0px
+}
+
+.dialog_bili button:hover {
+    background-color: #0056b3;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* width: 30px;
+    height: 30px; */
+    color: black;
+    cursor: pointer;
+}
+
+#open-modal-btn {
+    background-color: rgb(172, 170, 170);
+    color: rgb(247, 243, 243);
+    padding: 3px 30px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 60px;
+    height: 22px;
+    border-radius: 3px;
+    border: 1px solid #c1c1c1;
+    position: absolute;
+    top: -160px;
+    left: 38px;
+}
+
+#ai_speech {
+    background-color: rgb(172, 170, 170);
+    color: rgb(247, 243, 243);
+    padding: 3px 30px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 60px;
+    height: 22px;
+    border-radius: 3px;
+    border: 1px solid #c1c1c1;
+    position: absolute;
+    top: -35px;
+    left: 38px;
+}
+
+/* 屏幕宽度小于 600 大于340 像素时，手机自适应 */
+@media (min-width: 340px) and (max-width:600px) {
+    #open-modal-btn {
+        background-color: rgb(172, 170, 170);
+        color: rgb(247, 243, 243);
+        padding: 3px 10px;
+        font-size: 10px;
+        cursor: pointer;
+        width: 50px;
+        height: 22px;
+        border-radius: 3px;
+        border: 1px solid #c1c1c1;
+        position: absolute;
+        top: -100px;
+        left: 20%;
+    }
+
+    #ai_speech {
+        background-color: rgb(172, 170, 170);
+        color: rgb(247, 243, 243);
+        padding: 3px 10px;
+        font-size: 10px;
+        cursor: pointer;
+        width: 50px;
+        height: 22px;
+        border-radius: 3px;
+        border: 1px solid #c1c1c1;
+        position: absolute;
+        top: -100px;
+        left: 0px;
+    }
+
+    .btn_send1 {
+        background-color: rgb(172, 170, 170);
+        color: rgb(247, 243, 243);
+        padding: 3px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        width: 49px;
+        height: 22px;
+        border-radius: 3px;
+        border: 1px solid #c1c1c1;
+        position: absolute;
+        top: -137px;
+        left: 20%;
+    }
+
+    .back_login1 {
+        background-color: rgb(172, 170, 170);
+        color: rgb(247, 243, 243);
+        padding: 3px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        width: 49px;
+        height: 22px;
+        border-radius: 3px;
+        border: 1px solid #c1c1c1;
+        position: absolute;
+        top: -137px;
+        /* 	left: 1%; */
+    }
+
+    textarea.form-control {
+        height: 280px;
+    }
+}
+
+/* 语音css */
+
+/* 添加样式到播放器容器 */
+#audioPlayer {
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* 按钮样式 */
+#playButton,
+#pauseButton {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* 下拉菜单样式 */
+#speedSelector {
+    margin: 25px 0;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    font-size: 15px;
+}
+
+/* 调整播放器控制栏的样式 */
+audio::-webkit-media-controls-panel {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#refresh-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

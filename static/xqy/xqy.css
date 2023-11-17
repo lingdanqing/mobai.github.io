@@ -1,0 +1,139 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+#app {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.article-info {
+    margin-bottom: 20px;
+}
+
+.article-info label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.article-info input,
+.article-info button,
+.article-info select,
+.article-info textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.article-info button {
+    /* width: 100%;
+        padding: 8px; */
+    background: #40a1ee;
+    color: #fff;
+    border: 1px solid #5a5959;
+    margin-bottom: 2px;
+
+}
+
+.quill-editor {
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.preview {
+    height: 65vh;
+        overflow: auto;
+
+    margin-top: 5px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.quill-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.quill-toolbar button {
+    background-color: #40a1ee;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.quill-toolbar button:hover {
+    /* background-color: #45a049; */
+    background-color: #40a1ee;
+}
+
+.quill-preview {
+    margin-top: 20px;
+}
+
+img {
+    max-width: 100%
+}
+
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
+    border-top: 0px;
+    height: 75vh
+}
+
+.article-info a {
+    color: #008eff;
+}
+
+.top-bar {
+    background-color: #030303;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    top: 0;
+    width: 100%;
+
+    z-index: 1000;
+    /* Set a high z-index to ensure it's on top of other elements */
+}
+
+.top-bar div {
+    margin-right: 30px;
+}
+
+.article-info {
+    padding-top: 20px;
+}
+
+@media (min-width: 340px) and (max-width:600px) {
+    .ql-toolbar.ql-snow+.ql-container.ql-snow {
+        border-top: 0px;
+        height: 62vh
+    }
+
+}
